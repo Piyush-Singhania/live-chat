@@ -1,47 +1,49 @@
 <template>
-  <nav>
-      <div>
-          <p>Display name</p>
-          <p class="email">Display email</p>
-      </div>
-      <button @click="handleClick">Logout</button>
+  <nav v-if="user">
+    <div>
+      <p>Hey there {{ user.displayName }}</p>
+      <p class="email">Currently logged in as {{ user.email }}</p>
+    </div>
+    <button @click="handleClick">Logout</button>
   </nav>
 </template>
 
 <script>
-import useLogout from '../composables/useLogout'
+import useLogout from "../composables/useLogout";
+import getUser from "../composables/getUser";
 
 export default {
-    setup(){
-        const { logout, error } = useLogout();
+  setup() {
+    const { logout, error } = useLogout();
+    const { user } = getUser();
 
-        const handleClick = async () => {
-            await logout();
-            if(!error.value){
-                console.log("User Logged Out")
-            }
-        }
+    const handleClick = async () => {
+      await logout();
+      if (!error.value) {
+        console.log("User Logged Out");
+      }
+    };
 
-        return { handleClick}
-    }
-}
+    return { handleClick, user };
+  },
+};
 </script>
 
 <style>
- nav{
-     padding: 20px;
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-     border-bottom: 1px solid #eee;
- }
- nav p{
-     margin: 2px auto;
-     font-size: 16px;
-     color: #444;
- }
- nav p.email{
-     font-size: 14px;
-     color: #999;
- }
+nav {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+nav p {
+  margin: 2px auto;
+  font-size: 16px;
+  color: #444;
+}
+nav p.email {
+  font-size: 14px;
+  color: #999;
+}
 </style>
